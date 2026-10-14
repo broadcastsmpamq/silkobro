@@ -1,0 +1,2068 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SILKOBO - SMP Al Muttaqin</title>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    @keyframes spin-slow {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    .animate-spin-slow {
+      animation: spin-slow 8s linear infinite;
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col">
+
+  <nav class="bg-blue-900 text-white shadow-md sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <div class="flex items-center space-x-3">
+          <div class="rounded-full text-blue-900 font-bold text-sm w-10 h-10 flex items-center justify-center shadow-inner">
+            <img src="https://lh3.googleusercontent.com/d/1tTkumwU3NlZKCrWFcxj5olCndxL50EUG"alt="Logo Sekolah" class="h-9 w-auto object-contain drop-shadow-sm">
+          </div>
+          <div>
+            <span class="font-bold text-lg block tracking-wide">SILKOBRO</span>
+            <span class="text-xs text-blue-200 block -mt-1">SMP Al Muttaqin</span>
+          </div>
+        </div>
+        <div class="hidden md:flex items-center space-x-1 lg:space-x-3">
+  
+  <button onclick="switchTab('beranda')" class="px-4 py-2.5 rounded-xl text-sm font-medium text-slate-300 hover:text-white hover:bg-white/10 transition-all duration-300 flex items-center gap-2 group">
+    <i class="fa-solid fa-house text-blue-400 opacity-70 group-hover:opacity-100 transition-opacity"></i>
+    <span>Beranda</span>
+  </button>
+
+  <button onclick="switchTab('peminjaman')" class="px-4 py-2.5 rounded-xl text-sm font-medium text-slate-300 hover:text-white hover:bg-white/10 transition-all duration-300 flex items-center gap-2 group">
+    <i class="fa-solid fa-box-open text-emerald-400 opacity-70 group-hover:opacity-100 transition-opacity"></i>
+    <span>Peminjaman</span>
+  </button>
+
+  <button onclick="switchTab('broadcast')" class="px-4 py-2.5 rounded-xl text-sm font-medium text-slate-300 hover:text-white hover:bg-white/10 transition-all duration-300 flex items-center gap-2 group">
+    <i class="fa-solid fa-broadcast-tower text-purple-400 opacity-70 group-hover:opacity-100 transition-opacity"></i>
+    <span>Broadcast</span>
+  </button>
+
+  <div class="hidden lg:block h-6 w-px bg-white/20 mx-2"></div>
+
+  <button onclick="openLoginModal()" class="ml-2 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white px-5 py-2.5 rounded-xl text-sm font-bold shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 transition-all duration-300 transform active:scale-95 flex items-center space-x-2">
+    <i class="fas fa-user-lock"></i> 
+    <span>Admin</span>
+  </button>
+
+</div>
+        <div class="md:hidden">
+          <button onclick="toggleMobileMenu()" class="text-blue-200 hover:text-white focus:outline-none">
+            <i class="fas fa-bars text-xl"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div id="mobile-menu" class="hidden md:hidden absolute left-0 right-0 z-50 bg-slate-950/95 backdrop-blur-2xl border-b border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.7)] px-4 pt-4 pb-6 space-y-1.5 rounded-b-3xl transition-all duration-300">
+  
+  <button onclick="switchTab('beranda')" class="group flex w-full items-center gap-3 px-4 py-3 rounded-xl text-base font-medium text-slate-300 hover:text-white hover:bg-white/5 transition-all duration-300">
+    <div class="w-8 h-8 rounded-lg bg-blue-500/10 text-blue-400 flex items-center justify-center group-hover:scale-110 group-hover:bg-blue-500/20 transition-all">
+      <i class="fa-solid fa-house text-sm"></i>
+    </div>
+    <span>Beranda</span>
+  </button>
+
+  <button onclick="switchTab('peminjaman')" class="group flex w-full items-center gap-3 px-4 py-3 rounded-xl text-base font-medium text-slate-300 hover:text-white hover:bg-white/5 transition-all duration-300">
+    <div class="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center group-hover:scale-110 group-hover:bg-emerald-500/20 transition-all">
+      <i class="fa-solid fa-box-open text-sm"></i>
+    </div>
+    <span>Peminjaman Barang</span>
+  </button>
+
+  <button onclick="switchTab('broadcast')" class="group flex w-full items-center gap-3 px-4 py-3 rounded-xl text-base font-medium text-slate-300 hover:text-white hover:bg-white/5 transition-all duration-300">
+    <div class="w-8 h-8 rounded-lg bg-purple-500/10 text-purple-400 flex items-center justify-center group-hover:scale-110 group-hover:bg-purple-500/20 transition-all">
+      <i class="fa-solid fa-broadcast-tower text-sm"></i>
+    </div>
+    <span>Info Broadcast</span>
+  </button>
+
+  <div class="h-px w-full bg-white/10 my-3"></div>
+
+  <button onclick="openLoginModal()" class="w-full mt-2 flex items-center justify-center gap-2 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white px-4 py-3.5 rounded-xl text-sm font-bold shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 transition-all duration-300 transform active:scale-95">
+    <i class="fas fa-user-lock"></i>
+    <span>Admin Login</span>
+  </button>
+
+</div>
+  </nav>
+
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow">
+    
+    <section id="sec-beranda" class="space-y-8">
+      
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <!-- BANNER WELCOME PREMIUM & INTERAKTIF -->
+        <div class="lg:col-span-2 relative bg-gradient-to-r from-slate-900 via-indigo-950 to-blue-900 rounded-3xl p-6 md:p-8 shadow-xl overflow-hidden border border-slate-800/50 transition-all duration-300 hover:shadow-indigo-500/10">
+          
+          <!-- Ornamen Estetik Latar Belakang (Efek Glow) -->
+          <div class="absolute -top-24 -right-20 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl pointer-events-none"></div>
+          <div class="absolute -bottom-20 -left-10 w-60 h-60 bg-indigo-500/10 rounded-full blur-2xl pointer-events-none"></div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-5 gap-6 items-center relative z-10">
+            
+            <!-- SISI KIRI: TEKS SALAM & STATUS -->
+            <div class="lg:col-span-3 space-y-3">
+              <div class="inline-flex items-center space-x-2 bg-emerald-500/10 border border-emerald-500/20 rounded-full px-3 py-1 text-emerald-400 text-xs font-semibold tracking-wide">
+                <span class="w-2 h-2 bg-emerald-400 rounded-full animate-ping"></span>
+                <span>Sistem Operasional Online</span>
+              </div>
+              <h1 class="text-2xl md:text-3xl font-black text-white tracking-tight">
+                Selamat Datang di <span class="bg-gradient-to-r from-blue-400 to-indigo-300 bg-clip-text text-transparent">SILKOBRO </span> Dashboard
+              </h1>
+              <p class="text-xs md:text-sm text-slate-300/90 leading-relaxed max-w-xl">
+                (Sistem Informasi Lab. Komputer & Broadcast) Pusat kendali inventaris, penjadwalan KBM, dan peminjaman fasilitas Laboratorium Komputer & Studio Broadcast secara terpadu.
+              </p>
+            </div>
+
+            <!-- SISI KANAN: KARTU ASSET DENGAN EFEK COUNTER (3 KOLOM) -->
+            <div class="lg:col-span-2 grid grid-cols-3 gap-3">
+              
+              <!-- Card Laptop -->
+              <div class="bg-white/5 backdrop-blur-md border border-white/10 p-3.5 rounded-2xl flex flex-col items-center text-center group hover:bg-white/10 transition-all duration-300">
+                <div class="w-9 h-9 bg-blue-500/20 text-blue-400 rounded-xl flex items-center justify-center text-base mb-2 group-hover:scale-110 transition-transform">
+                  <i class="fas fa-laptop"></i>
+                </div>
+                <!-- ID stat-count ditambahkan untuk animasi JavaScript -->
+                <span id="count-laptop" class="text-xl md:text-2xl font-black text-white tracking-tight" data-target="49">0</span>
+                <span class="text-[10px] font-medium text-slate-400 uppercase tracking-wider mt-0.5">Laptop</span>
+              </div>
+
+              <!-- Card PC -->
+              <div class="bg-white/5 backdrop-blur-md border border-white/10 p-3.5 rounded-2xl flex flex-col items-center text-center group hover:bg-white/10 transition-all duration-300">
+                <div class="w-9 h-9 bg-indigo-500/20 text-indigo-400 rounded-xl flex items-center justify-center text-base mb-2 group-hover:scale-110 transition-transform">
+                  <i class="fas fa-desktop"></i>
+                </div>
+                <span id="count-pc" class="text-xl md:text-2xl font-black text-white tracking-tight" data-target="23">0</span>
+                <span class="text-[10px] font-medium text-slate-400 uppercase tracking-wider mt-0.5">Komputer</span>
+              </div>
+
+              <!-- Card AC -->
+              <div class="bg-white/5 backdrop-blur-md border border-white/10 p-3.5 rounded-2xl flex flex-col items-center text-center group hover:bg-white/10 transition-all duration-300">
+                <div class="w-9 h-9 bg-cyan-500/20 text-cyan-400 rounded-xl flex items-center justify-center text-base mb-2 group-hover:scale-110 transition-transform">
+                  <i class="fas fa-snowflake animate-spin-slow"></i>
+                </div>
+                <span id="count-ac" class="text-xl md:text-2xl font-black text-white tracking-tight" data-target="2">0</span>
+                <span class="text-[10px] font-medium text-slate-400 uppercase tracking-wider mt-0.5">Pendingin</span>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      
+        <!----Penunjungg------->
+        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
+          <h2 class="text-lg font-bold text-slate-900 mb-4 flex items-center space-x-2">
+            <i class="fas fa-user-check text-blue-600"></i> <span>Form Pengunjung</span>
+          </h2>
+          <form id="form-pengunjung" onsubmit="handleFormPengunjung(event)" class="space-y-4">
+            <div>
+              <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Nama Lengkap</label>
+              <input type="text" id="v-nama" required class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-600 transition" placeholder="Nama lengkap Anda...">
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Peran</label>
+                <select id="v-peran" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:border-blue-600">
+                  <option value="Siswa">Siswa</option>
+                  <option value="Guru">Guru</option>
+                  <option value="Staf">Staf</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Ruangan</label>
+                <select id="v-ruang" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:border-blue-600">
+                  <option value="Labkom">Lab. Komputer</option>
+                  <option value="Broadcast">Broadcast</option>
+                </select>
+              </div>
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Keperluan / Materi</label>
+              <input type="text" id="v-keperluan" required class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-600 transition" placeholder="Contoh: Praktik TIK / Rekaman">
+            </div>
+            <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 rounded-lg text-sm shadow transition flex items-center justify-center space-x-2">
+              <i class="fas fa-paper-plane"></i> <span>Kirim / Simpan</span>
+            </button>
+          </form>
+        </div>
+      </div>
+      
+      <!--Jadwal Mapel-->
+      <div class="lg:col-span-2 bg-white p-4 md:p-6 rounded-2xl shadow-sm border border-slate-100">
+  
+  <div class="flex items-center justify-between mb-4">
+    <h2 class="text-base md:text-lg font-bold text-slate-900 flex items-center space-x-2">
+      <i class="fas fa-calendar-day text-blue-600"></i> 
+      <span>Jadwal Penggunaan Hari Ini</span>
+    </h2>
+    <span id="label-hari-ini" class="bg-blue-50 text-blue-700 px-2 py-1 md:px-3 md:py-1 rounded-full text-[10px] md:text-xs font-bold uppercase tracking-wider">Memuat...</span>
+  </div>
+  
+  <div class="overflow-x-auto w-full">
+    <table class="w-full text-left text-xs md:text-sm border-collapse">
+      <thead>
+        <tr class="bg-slate-50 border-b border-slate-100 text-slate-500 font-semibold">
+          <th class="px-2 py-3 md:px-4 md:py-3 whitespace-nowrap">Waktu</th>
+          <th class="px-1 py-3 md:px-4 md:py-3 text-center md:text-left">Kelas</th>
+          <th class="px-2 py-3 md:px-4 md:py-3">Guru Pengampu</th>
+        </tr>
+      </thead>
+      
+      <tbody id="tabel-jadwal-body" class="divide-y divide-slate-100 text-slate-600">
+        <tr>
+          <td colspan="3" class="p-4 text-center text-slate-400 italic">Mendapatkan data harian dari server...</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
+</div>
+
+        <!-- KOTAK GRAFIK DENGAN FITUR MULTI-FILTER -->
+        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col justify-between">
+          <div class="flex justify-between items-start mb-4">
+            <div>
+              <h2 class="text-lg font-bold text-slate-900 mb-1 flex items-center space-x-2">
+                <i class="fas fa-chart-bar text-blue-600"></i> <span>Grafik Pengunjung</span>
+              </h2>
+              <!-- ID teks-periode ditambahkan agar teksnya bisa berubah otomatis -->
+              <p id="teks-periode" class="text-xs text-slate-400">Perbandingan statistik aktivitas 7 hari terakhir.</p>
+            </div>
+            
+            <!-- Elemen Dropdown Filter Baru -->
+            <select id="filter-periode" onchange="initChart()" class="border border-slate-200 rounded-lg px-2 py-1 text-xs bg-white text-slate-600 outline-none focus:border-blue-600 font-medium shadow-sm cursor-pointer">
+              <option value="minggu">7 Hari Terakhir</option>
+              <option value="3bulan">3 Bulan Terakhir</option>
+              <option value="6bulan">6 Bulan Terakhir</option>
+              <option value="tahun">1 Tahun Terakhir</option>
+            </select>
+          </div>
+          
+          <div class="relative h-48 w-full">
+            <canvas id="chartPengunjung"></canvas>
+          </div>
+        </div>
+      </div>
+
+
+<!----Card Profil------->
+      <div class="bg-white rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 overflow-hidden mt-8">
+  <div class="p-6 md:p-8">
+    
+    <div class="flex items-center gap-2 mb-6">
+      <span class="bg-blue-50 text-blue-600 px-3 py-1 rounded-full text-xs font-bold border border-blue-100 flex items-center gap-1.5">
+        <i class="fa-solid fa-user-gear"></i> Pengelola Laboratorium
+      </span>
+    </div>
+
+    <div class="flex flex-col md:flex-row items-center gap-6 md:gap-8">
+      
+      <div class="relative group shrink-0">
+        <div class="w-32 h-32 md:w-40 md:h-40 rounded-2xl overflow-hidden border-4 border-white shadow-md bg-slate-100 relative z-10">
+          <img src="https://lh3.googleusercontent.com/d/1n-v231Ym0BKVdZltlamhRBTI8MEhU7iZ" alt="Kepala Lab Komputer" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+        </div>
+        <div class="absolute -bottom-2 -right-2 w-32 h-32 md:w-40 md:h-40 bg-blue-600/10 rounded-2xl -z-0 group-hover:translate-x-1 group-hover:translate-y-1 transition-transform"></div>
+      </div>
+
+      <div class="flex-1 text-center md:text-left">
+        <h3 class="text-xl md:text-2xl font-bold text-slate-800 mb-1">
+          Gani Adi Alzani Rusandi, S.Kom.
+        </h3>
+        <p class="text-sm font-semibold text-blue-600 mb-3">
+          Kepala Laboratorium Komputer & Broadcast
+        </p>
+        
+        <p class="text-xs md:text-sm text-slate-600 leading-relaxed mb-4 italic">
+          "Bertanggung jawab atas pengelolaan, efektivitas penggunaan sarana laboratorium, serta kelancaran Kegiatan Belajar Mengajar (KBM) berbasis teknologi informasi di SMP Al Muttaqin."
+        </p>
+
+        <div class="flex flex-wrap justify-center md:justify-start gap-2.5 text-xs">
+          <a href="https://wa.me/6285762211533?text=Halo,%20saya%20ingin%20bertanya%20mengenai%20Labkom" 
+             target="_blank" 
+             rel="noopener noreferrer"
+             class="bg-emerald-500 hover:bg-emerald-600 text-white font-semibold px-3.5 py-2 rounded-xl shadow-sm hover:shadow-md transition-all flex items-center gap-2 active:scale-95">
+            <i class="fa-brands fa-whatsapp text-sm text-white"></i>
+            <span>Hubungi WhatsApp</span>
+          </a>
+          <div class="bg-slate-50 px-3 py-2 rounded-xl border border-slate-100 flex items-center gap-2 text-slate-600">
+            <i class="fa-solid fa-clock text-blue-500"></i>
+            <span>Jam Tugas: <strong>07.20 - 15.10 WIB</strong></span>
+          </div>
+          <div class="bg-slate-50 px-3 py-2 rounded-xl border border-slate-100 flex items-center gap-2 text-slate-600">
+            <i class="fa-solid fa-location-dot text-blue-500"></i>
+            <span>Ruang: <strong>Ruang Laboratorium Komputer & Broadcast</strong></span>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+    </section>
+    <!-- ========================================== -->
+    <!-- HALAMAN PEMINJAMAN BARANG PUBLIK -->
+    <section id="sec-peminjaman" class="hidden space-y-8">
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        
+        <!-- Form Pengajuan Pinjaman -->
+        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 h-fit">
+          <h2 class="text-lg font-bold text-slate-900 mb-4 flex items-center space-x-2">
+            <i class="fas fa-file-signature text-blue-600"></i> <span>Form Ajukan Pinjaman</span>
+          </h2>
+          <form id="form-pinjam-barang" onsubmit="handleAjukanPeminjaman(event)" class="space-y-4">
+            <div>
+              <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Nama Lengkap Peminjam</label>
+              <input type="text" id="p-nama" required class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:border-blue-600 outline-none" placeholder="Nama Guru / Siswa...">
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Ruang Asal Barang</label>
+              <select id="p-ruang" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm bg-white focus:border-blue-600 outline-none">
+                <option value="Labkom">Laboratorium Komputer</option>
+                <option value="Broadcast">Studio Broadcast</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Nama Barang yang Dipinjam</label>
+              <input type="text" id="p-barang" required class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:border-blue-600 outline-none" placeholder="Contoh: Kamera Canon / Proyektor">
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Tgl Pinjam</label>
+                <input type="date" id="p-tgl-pinjam" required class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none">
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Tgl Kembali</label>
+                <input type="date" id="p-tgl-kembali" required class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none">
+              </div>
+            </div>
+            <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 rounded-lg text-sm shadow transition flex items-center justify-center space-x-2">
+              <i class="fas fa-paper-plane"></i> <span>Kirim Pengajuan</span>
+            </button>
+          </form>
+        </div>
+
+        <!-- Tabel Tracking Status Peminjaman -->
+        <div class="lg:col-span-2 bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
+          <div class="flex justify-between items-center mb-4">
+            <h2 class="text-lg font-bold text-slate-900 flex items-center space-x-2">
+              <i class="fas fa-tasks text-blue-600"></i> <span>Status Log Peminjaman</span>
+            </h2>
+            <button onclick="loadPeminjamanData()" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-600 px-3 py-1 rounded-lg font-medium"><i class="fas fa-sync-alt mr-1"></i> Refresh</button>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-sm border-collapse min-w-[600px]">
+              <thead>
+                <tr class="bg-slate-50 border-b border-slate-100 text-slate-500 font-semibold">
+                  <th class="p-3">ID</th>
+                  <th class="p-3">Peminjam</th>
+                  <th class="p-3">Barang (Asal)</th>
+                  <th class="p-3">Durasi</th>
+                  <th class="p-3">Status</th>
+                </tr>
+              </thead>
+              <tbody id="tabel-pinjam-public-body" class="divide-y divide-slate-100 text-slate-600">
+                <tr>
+                  <td colspan="5" class="p-4 text-center text-slate-400 italic">Memuat data log peminjaman...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- HALAMAN INFO BROADCAST (Awalnya Disembunyikan) -->
+    <!-- ========================================== -->
+    <section id="sec-broadcast" class="hidden space-y-6">
+      <div class="bg-gradient-to-r from-blue-900 to-blue-700 text-white rounded-2xl p-8 shadow-lg">
+        <h2 class="text-2xl font-bold mb-2"><i class="fas fa-video mr-2"></i>Studio Broadcast Al Muttaqin</h2>
+        <p class="text-blue-100 max-w-3xl">Ruang kreativitas siswa untuk produksi video, podcast, dan penyiaran informasi sekolah. Dilengkapi dengan peralatan multimedia standar profesional.</p>
+      </div>
+
+      <div class="bg-white rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 overflow-hidden mb-8">
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 p-6 md:p-10 items-center">
+    
+    <div>
+      <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-indigo-50 text-indigo-600 text-xs font-bold mb-5 border border-indigo-100">
+        <i class="fa-solid fa-microphone-lines animate-pulse"></i>
+        Fasilitas Unggulan
+      </div>
+      
+      <h2 class="text-2xl md:text-3xl font-bold text-slate-800 mb-4 leading-tight">
+        Studio Broadcast & Podcast <br> <span class="text-blue-600">SMP Al Muttaqin</span>
+      </h2>
+      
+      <p class="text-slate-600 mb-6 leading-relaxed text-sm md:text-base">
+        Ruang Broadcast adalah wadah bagi siswa untuk berkreasi, berinovasi, dan mengembangkan potensi di bidang penyiaran serta media digital. Sebagai studio radio sekaligus laboratorium praktik, ruang ini menjadi tempat belajar yang interaktif untuk melatih kepercayaan diri, kemampuan komunikasi, kreativitas, kolaborasi, dan literasi digital sebagai bekal menghadapi tantangan di era modern.
+      </p>
+      
+      <ul class="space-y-4">
+        <li class="flex items-start gap-3">
+          <div class="bg-green-100 p-1.5 rounded-full shrink-0 mt-0.5">
+            <i class="fa-solid fa-check text-green-600 text-xs"></i>
+          </div>
+          <div>
+            <h4 class="text-sm font-bold text-slate-700">Melatih Public Speaking</h4>
+            <p class="text-xs text-slate-500 mt-1">Mengasah keberanian siswa berbicara di depan umum sebagai penyiar atau host podcast.</p>
+          </div>
+        </li>
+        <li class="flex items-start gap-3">
+          <div class="bg-green-100 p-1.5 rounded-full shrink-0 mt-0.5">
+            <i class="fa-solid fa-check text-green-600 text-xs"></i>
+          </div>
+          <div>
+            <h4 class="text-sm font-bold text-slate-700">Produksi Konten Digital</h4>
+            <p class="text-xs text-slate-500 mt-1">Dilengkapi alat rekam audio-visual untuk ekstrakurikuler jurnalistik dan pembuatan video edukasi.</p>
+          </div>
+        </li>
+        <li class="flex items-start gap-3">
+          <div class="bg-green-100 p-1.5 rounded-full shrink-0 mt-0.5">
+            <i class="fa-solid fa-check text-green-600 text-xs"></i>
+          </div>
+          <div>
+            <h4 class="text-sm font-bold text-slate-700">Pusat Informasi Sekolah</h4>
+            <p class="text-xs text-slate-500 mt-1">Penyiaran berita, pengumuman, dan hiburan edukatif saat jam istirahat berlangsung.</p>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <div class="grid grid-cols-2 gap-3 md:gap-4">
+      <div class="col-span-2 overflow-hidden rounded-2xl shadow-sm group relative">
+        <div class="absolute inset-0 bg-indigo-900/10 group-hover:bg-transparent transition duration-300 z-10"></div>
+        <img src="https://lh3.googleusercontent.com/d/1a0IWsKxdM_bQbL3S3I1yOzRf93fuZiu0" alt="Ruang Broadcast Utama" class="w-full h-48 md:h-64 object-cover group-hover:scale-110 transition-transform duration-700">
+      </div>
+      
+      <div class="overflow-hidden rounded-2xl shadow-sm group relative">
+        <div class="absolute inset-0 bg-indigo-900/10 group-hover:bg-transparent transition duration-300 z-10"></div>
+        <img src="https://lh3.googleusercontent.com/d/1nGDTWYB19S76KMJ-sCkPNkA4WFVq9W9e" alt="Peralatan Podcast" class="w-full h-32 md:h-40 object-cover group-hover:scale-110 transition-transform duration-700">
+      </div>
+      
+      <div class="overflow-hidden rounded-2xl shadow-sm group relative">
+        <div class="absolute inset-0 bg-indigo-900/10 group-hover:bg-transparent transition duration-300 z-10"></div>
+        <img src="https://lh3.googleusercontent.com/d/1pyeT2-bSaMENzVIl4EDaiD35-LZFqHbf" alt="Siswa Sedang Siaran" class="w-full h-32 md:h-40 object-cover group-hover:scale-110 transition-transform duration-700">
+      </div>
+    </div>
+
+  </div>
+</div>
+    </section>
+
+  <!-- MODAL LOGIN ADMIN (Hidden by default) -->
+  <div id="modal-login" class="hidden fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-[60] flex justify-center items-center px-4 transition-all duration-300">
+  
+  <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-blue-600/20 rounded-full blur-[100px] pointer-events-none"></div>
+
+  <div class="w-full max-w-md bg-slate-900/90 backdrop-blur-2xl border border-white/10 p-8 sm:p-10 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] relative z-10 transform transition-all">
+    
+    <button onclick="closeLoginModal()" class="absolute top-5 right-5 text-slate-400 hover:text-white transition-colors bg-white/5 hover:bg-white/10 w-8 h-8 rounded-full flex items-center justify-center">
+      <i class="fas fa-times"></i>
+    </button>
+
+    <div class="text-center mb-8">
+      <div class="w-16 h-16 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl mx-auto flex items-center justify-center shadow-lg shadow-blue-500/30 mb-4 transform transition hover:scale-105 duration-300">
+        <i class="fa-solid fa-fingerprint text-3xl text-white"></i>
+      </div>
+      <h3 class="text-2xl sm:text-3xl font-black text-white tracking-tight mb-1">
+        Akses <span class="bg-gradient-to-r from-blue-400 to-indigo-300 bg-clip-text text-transparent">Admin</span>
+      </h3>
+      <p class="text-sm text-slate-400 font-medium">Sistem Informasi Lab & Broadcast</p>
+    </div>
+
+    <div class="space-y-5">
+      
+      <div class="space-y-1.5">
+        <label class="block text-xs font-semibold text-slate-300 tracking-wide uppercase">Username</label>
+        <div class="relative group">
+          <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+            <i class="fa-solid fa-user text-slate-500 group-focus-within:text-blue-400 transition-colors duration-300"></i>
+          </div>
+          <input type="text" id="admin-user" class="w-full bg-slate-950/50 border border-white/10 text-white text-sm rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 block pl-11 p-3.5 transition-all duration-300 placeholder-slate-600" placeholder="Masukkan username" autocomplete="off">
+        </div>
+      </div>
+
+      <div class="space-y-1.5">
+        <label class="block text-xs font-semibold text-slate-300 tracking-wide uppercase">Password</label>
+        <div class="relative group">
+          <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+            <i class="fa-solid fa-lock text-slate-500 group-focus-within:text-indigo-400 transition-colors duration-300"></i>
+          </div>
+          <input type="password" id="admin-pass" class="w-full bg-slate-950/50 border border-white/10 text-white text-sm rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 block pl-11 p-3.5 transition-all duration-300 placeholder-slate-600" placeholder="••••••••">
+        </div>
+      </div>
+
+      <button onclick="prosesLogin()" class="w-full bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white font-bold rounded-xl text-sm px-5 py-4 text-center shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 transition-all duration-300 transform active:scale-95 mt-4">
+        Masuk ke Dashboard <i class="fa-solid fa-arrow-right-to-bracket ml-2"></i>
+      </button>
+
+    </div>
+  </div>
+</div>
+  <div id="modal-loading" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[70] flex flex-col justify-center items-center px-4 transition-all">
+  <div class="bg-white p-6 rounded-2xl shadow-2xl flex flex-col items-center min-w-[250px]">
+    <div class="w-12 h-12 border-4 border-slate-200 border-t-blue-600 rounded-full animate-spin mb-4"></div>
+    <h3 class="text-lg font-bold text-slate-800">Sedang Memproses...</h3>
+    <p class="text-sm text-slate-500 mt-1 text-center">Menyimpan data ke server</p>
+  </div>
+</div>
+<!-- ========================================== -->
+    <!-- HALAMAN DASHBOARD ADMIN (Awalnya Disembunyikan) -->
+    <!-- ========================================== -->
+    <section id="sec-admin" class="hidden space-y-6">
+      <div class="bg-slate-900 text-white rounded-2xl p-6 shadow-lg flex justify-between items-center border-l-4 border-yellow-500">
+        <div>
+          <span class="bg-yellow-500/20 text-yellow-400 text-xs font-bold px-2.5 py-1 rounded-md uppercase tracking-wider">Mode Administrator</span>
+          <h2 class="text-2xl font-bold mt-2"><i class="fas fa-user-shield mr-2"></i>Control Panel SILKOBRO</h2>
+          <p class="text-slate-400 text-sm mt-1">Selamat bekerja, Tuan Muda. Di sini Anda memegang kendali penuh atas data Laboratorium.</p>
+        </div>
+        <button onclick="logoutAdmin()" class="bg-red-600 hover:bg-red-700 text-white text-xs font-bold px-4 py-2 rounded-lg transition shadow flex items-center space-x-2">
+          <i class="fas fa-sign-out-alt"></i> <span>Keluar Panel</span>
+        </button>
+      </div>
+
+      <!-- Menu Navigasi Internal Admin -->
+      <!-- AREA WORKSPACE PANEL ADMIN -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        
+        <!-- KOLOM KIRI: MENU NAVIGASI ADMIN -->
+        <div class="space-y-3">
+          <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-100">
+            <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Navigasi Admin</h3>
+            <div class="space-y-1">
+              <button onclick="bukaPanelAdmin('jadwal')" class="w-full text-left bg-blue-50 text-blue-700 p-3 rounded-lg text-sm font-semibold flex items-center btn-adm-nav" id="btn-adm-jadwal">
+                <i class="fas fa-calendar-alt w-6"></i> Kelola Jadwal Labkom
+              </button>
+              <button onclick="bukaPanelAdmin('inv-lab')" class="w-full text-left hover:bg-slate-50 text-slate-700 p-3 rounded-lg text-sm font-medium flex items-center btn-adm-nav" id="btn-adm-inv-lab">
+                <i class="fas fa-laptop w-6"></i> Inventaris Labkom
+              </button>
+              <button onclick="bukaPanelAdmin('inv-brd')" class="w-full text-left hover:bg-slate-50 text-slate-700 p-3 rounded-lg text-sm font-medium flex items-center btn-adm-nav" id="btn-adm-inv-brd">
+                <i class="fas fa-video w-6"></i> Inventaris Broadcast
+              </button>
+              <button onclick="bukaPanelAdmin('verifikasi-pinjam')" class="w-full text-left hover:bg-slate-50 text-slate-700 p-3 rounded-lg text-sm font-medium flex items-center btn-adm-nav" id="btn-adm-verify">
+                <i class="fas fa-clipboard-check w-6"></i> Verifikasi Peminjaman
+              </button>
+              <button onclick="bukaPanelKeuangan()" class="w-full text-left hover:bg-slate-50 text-slate-700 p-3 rounded-lg text-sm font-medium flex items-center btn-adm-nav" id="btn-adm-keuangan">
+              <i class="fas fa-wallet w-6 text-green-600"></i> Manajemen Saldo
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- KOLOM KANAN: FORM & AKSI DINAMIS (Konten Berubah Sesuai Menu yang Diklik) -->
+        <div class="lg:col-span-2 space-y-6">
+          
+          <!-- SUB-PANEL 1: KELOLA JADWAL LABKOM -->
+          <div id="adm-panel-jadwal" class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 adm-panel hidden">
+            <div class="mb-4 border-b pb-2">
+              <h3 class="text-lg font-bold text-slate-900 flex items-center space-x-2">
+                <i class="fas fa-calendar-alt text-blue-600"></i> 
+                <span>Kelola Jadwal Penggunaan Labkom</span>
+              </h3>
+              <p class="text-xs text-slate-400">Panel eksklusif Admin untuk menambah, mengedit, dan menghapus jadwal kerja.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              <div class="bg-slate-50 p-5 rounded-xl border border-slate-100 h-fit shadow-sm">
+                <h4 class="text-sm font-bold text-slate-700 mb-4 flex items-center">
+                  <i class="fas fa-plus-circle text-blue-500 mr-2"></i>Tambah Jadwal Penggunaan Lab
+                </h4>
+                <form id="form-tambah-jadwal" onsubmit="handleTambahJadwal(event)" class="space-y-4">
+                  <div class="grid grid-cols-2 gap-3">
+                    <div>
+                      <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Hari</label>
+                      <select id="jdl-hari" required class="w-full border border-slate-200 rounded-lg px-2 py-2 text-sm bg-white focus:border-blue-600 outline-none">
+                        <option value="Senin">Senin</option>
+                        <option value="Selasa">Selasa</option>
+                        <option value="Rabu">Rabu</option>
+                        <option value="Kamis">Kamis</option>
+                        <option value="Jumat">Jumat</option>
+                        <option value="Sabtu">Sabtu</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Kelas</label>
+                      <input type="text" id="jdl-kelas" required class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:border-blue-600 outline-none" placeholder="Contoh: 7A / 8B">
+                    </div>
+                  </div>
+
+                  <div class="grid grid-cols-2 gap-3">
+                    <div>
+                      <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Jam Mulai</label>
+                      <input type="text" id="jdl-jam-mulai" required class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:border-blue-600 outline-none" placeholder="07:00">
+                    </div>
+                    <div>
+                      <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Jam Selesai</label>
+                      <input type="text" id="jdl-jam-selesai" required class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:border-blue-600 outline-none" placeholder="08:20">
+                    </div>
+                  </div>
+
+                  <div>
+                    <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Guru Pengampu</label>
+                    <input type="text" id="jdl-guru" required class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:border-blue-600 outline-none" placeholder="Nama Guru Pengampu...">
+                  </div>
+
+                  <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 rounded-lg text-sm shadow transition">
+                    Simpan Jadwal Baru
+                  </button>
+                </form>
+              </div>
+
+              <div class="lg:col-span-2">
+                <div class="overflow-x-auto rounded-xl border border-slate-100">
+                  <table class="w-full text-left text-sm border-collapse min-w-[600px]">
+                    <thead>
+                      <tr class="bg-slate-100 text-slate-600 font-semibold text-xs border-b border-slate-200">
+                        <th class="p-3">Hari</th>
+                        <th class="p-3">Jam Mulai</th>
+                        <th class="p-3">Jam Selesai</th>
+                        <th class="p-3">Kelas</th>
+                        <th class="p-3">Guru Pengampu</th>
+                        <th class="p-3 text-center">Aksi</th>
+                      </tr>
+                    </thead>
+                    <tbody id="tabel-jadwal-admin-body" class="divide-y divide-slate-100 text-slate-600 text-xs">
+                      <tr>
+                        <td colspan="6" class="p-4 text-center text-slate-400 italic">Memuat daftar master jadwal...</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- SUB-PANEL 2: INVENTARIS DINAMIS (Labkom / Broadcast) -->
+          <div id="adm-panel-inventaris" class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 adm-panel hidden">
+            <button onclick="cetakLaporanInventaris()" class="mt-2 bg-rose-600 hover:bg-rose-700 text-white text-xs px-4 py-2 rounded-lg font-medium shadow-sm flex items-center w-fit no-print">
+  <i class="fas fa-file-pdf mr-2"></i> Cetak Laporan PDF
+</button>
+            <div class="flex justify-between items-center mb-4 border-b pb-2">
+              <div>
+                <h3 class="text-lg font-bold text-slate-900 flex items-center space-x-2">
+                  <i class="fas fa-boxes text-blue-600"></i> 
+                  <span id="txt-inv-ruang">Manajemen Inventaris</span>
+                </h3>
+                <p class="text-xs text-slate-400">Pencatatan aset sarana prasarana logistik sekolah.</p>
+              </div>
+              <!-- Input Tersembunyi untuk Penanda Ruang Aktif -->
+              <input type="hidden" id="inv-target-ruang" value="Labkom">
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              <!-- FORM INPUT ASET BARU -->
+              <div class="bg-slate-50 p-4 rounded-xl border border-slate-100 h-fit">
+                <h4 class="text-sm font-bold text-slate-700 mb-3 flex items-center"><i class="fas fa-plus-circle text-blue-500 mr-2"></i>Tambah Barang</h4>
+                <form id="form-tambah-inventaris" onsubmit="handleTambahInventaris(event)" class="space-y-3">
+                  <div>
+                    <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Nama Barang / Perangkat</label>
+                    <input type="text" id="inv-nama" required class="w-full border border-slate-200 rounded-lg px-3 py-1.5 text-sm focus:border-blue-600 outline-none" placeholder="Contoh: PC core i5 / Mic Wireless">
+                  </div>
+                  <div class="grid grid-cols-2 gap-3">
+                    <div>
+                      <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Jumlah (Unit)</label>
+                      <input type="number" id="inv-jumlah" min="1" value="1" required class="w-full border border-slate-200 rounded-lg px-3 py-1.5 text-sm focus:border-blue-600 outline-none">
+                    </div>
+                    <div>
+                      <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Kondisi</label>
+                      <select id="inv-kondisi" class="w-full border border-slate-200 rounded-lg px-2 py-1.5 text-sm bg-white focus:border-blue-600 outline-none">
+                        <option value="Bagus">Bagus</option>
+                        <option value="Rusak Ringan">Rusak Ringan</option>
+                        <option value="Rusak Berat">Rusak Berat</option>
+                      </select>
+                    </div>
+                  </div>
+                  <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 rounded-lg text-sm shadow transition flex items-center justify-center space-x-1">
+                    <i class="fas fa-save text-xs"></i> <span>Simpan Aset</span>
+                  </button>
+                </form>
+              </div>
+
+              <!-- TABEL MONITORING ASET SESUAI RUANG -->
+              <div class="lg:col-span-2">
+                <div class="overflow-x-auto">
+                  <table class="w-full text-left text-sm border-collapse min-w-[600px]">
+                   <thead>
+  <tr class="bg-slate-100 text-slate-600 font-semibold text-xs border-b border-slate-200">
+    <th class="p-2.5">ID</th>
+    <th class="p-2.5">Nama Barang</th>
+    <th class="p-2.5">Jumlah</th>
+    <th class="p-2.5">Kondisi</th>
+    <th class="p-2.5 text-center no-print">Aksi</th> <!-- INI YANG BARU -->
+  </tr>
+</thead>
+                    <tbody id="tabel-inventaris-body" class="divide-y divide-slate-100 text-slate-600 text-xs">
+                      <tr>
+                        <td colspan="4" class="p-4 text-center text-slate-400 italic">Memuat daftar inventaris...</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        
+          <!-- SUB-PANEL 3: VERIFIKASI PEMINJAMAN (Hanya Admin) -->
+          <div id="adm-panel-verifikasi" class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 adm-panel hidden">
+            <h3 class="text-lg font-bold text-slate-900 mb-2"><i class="fas fa-user-check text-yellow-600 mr-2"></i>Persetujuan & Pengembalian Barang</h3>
+            <p class="text-xs text-slate-400 mb-4">Daftar permintaan sirkulasi logistik yang memerlukan tindakan Tuan Muda.</p>
+            <div class="overflow-x-auto">
+              <table class="w-full text-left text-sm border-collapse min-w-[600px]">
+                <thead>
+                  <tr class="bg-slate-50 border-b border-slate-200 text-slate-600 font-semibold">
+                    <th class="p-3">ID</th>
+                    <th class="p-3">Peminjam</th>
+                    <th class="p-3">Barang</th>
+                    <th class="p-3">Status</th>
+                    <th class="p-3 text-center">Tindakan Otoritas</th>
+                  </tr>
+                </thead>
+                <tbody id="tabel-admin-verifikasi-body" class="divide-y divide-slate-100 text-slate-600">
+                  <!-- Data diisi otomatis lewat JavaScript -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <!-- PANEL MANAJEMEN SALDO -->
+<div id="adm-panel-keuangan" class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 adm-panel hidden">
+  <div class="mb-4 border-b pb-4 flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
+    <div>
+      <h3 class="text-lg font-bold text-slate-900 flex items-center space-x-2">
+        <i class="fas fa-wallet text-green-600"></i> 
+        <span>Manajemen Saldo Perawatan</span>
+      </h3>
+      <p class="text-xs text-slate-400 mt-1">Pencatatan pemasukan sewa alat dan pengeluaran perawatan.</p>
+    </div>
+    <div class="bg-green-50 border border-green-200 px-5 py-3 rounded-xl text-right min-w-[200px]">
+      <p class="text-[10px] text-green-600 font-bold uppercase tracking-wider mb-1">Total Saldo Aktif</p>
+      <p class="text-2xl font-black text-green-700" id="teks-total-saldo">Rp 0</p>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <!-- Form Pencatatan -->
+    <div class="bg-slate-50 p-4 rounded-xl border border-slate-100 h-fit">
+      <h4 class="text-sm font-bold text-slate-700 mb-3"><i class="fas fa-edit text-green-500 mr-2"></i>Catat Transaksi</h4>
+      <form id="form-keuangan" onsubmit="submitKeuangan(event)" class="space-y-3">
+        <div>
+          <label class="block text-xs font-semibold text-slate-500 mb-1">Keterangan (Cth: Sewa Kamera Event X)</label>
+          <input type="text" id="input-keu-ket" required class="w-full border rounded-lg px-3 py-1.5 text-sm outline-none focus:border-green-500">
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="block text-xs font-semibold text-slate-500 mb-1">Jenis</label>
+            <select id="input-keu-jenis" class="w-full border rounded-lg px-2 py-1.5 text-sm bg-white outline-none focus:border-green-500">
+              <option value="Pemasukan">Pemasukan (+)</option>
+              <option value="Pengeluaran">Pengeluaran (-)</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-500 mb-1">Nominal</label>
+            <input type="number" id="input-keu-nominal" min="0" required class="w-full border rounded-lg px-3 py-1.5 text-sm outline-none focus:border-green-500">
+          </div>
+        </div>
+        <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-2 rounded-lg text-sm transition">
+          Simpan Data
+        </button>
+      </form>
+    </div>
+
+    <!-- Tabel Riwayat Keuangan -->
+    <div class="lg:col-span-2 overflow-x-auto rounded-xl border border-slate-100">
+      <table class="w-full text-left text-sm border-collapse min-w-[600px]">
+        <thead>
+          <tr class="bg-slate-100 text-slate-600 font-semibold text-xs border-b">
+            <th class="p-3">Tanggal</th>
+            <th class="p-3">Keterangan</th>
+            <th class="p-3">Status</th>
+            <th class="p-3 text-right">Nominal</th>
+            <th class="p-3 text-center">Aksi</th> <!-- INI YANG DITAMBAHKAN -->
+          </tr>
+        </thead>
+        <tbody id="tabel-keuangan-body" class="divide-y divide-slate-100 text-xs">
+          <tr><td colspan="5" class="p-4 text-center text-slate-400">Memuat data...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+
+  <script>
+    // Letakkan di dalam tag <script>
+function showLoading() {
+  const modal = document.getElementById('modal-loading');
+  if (modal) {
+    modal.classList.remove('hidden');
+  } else {
+    alert("Oops! Kode HTML untuk Modal Loading belum terpasang atau ID salah.");
+  }
+}
+
+function hideLoading() {
+  const modal = document.getElementById('modal-loading');
+  if (modal) {
+    modal.classList.add('hidden');
+  }
+}
+
+    function getHariIndonesia() {
+      const hari = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+      return hari[new Date().getDay()];
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('label-hari-ini').innerText = getHariIndonesia();
+      initChart();
+      loadRealtimeData();
+      jalankanEfekOdometer();
+    });
+
+    let instanceChartPengunjung = null;
+
+    function initChart() {
+      // 1. Ambil nilai filter yang sedang dipilih Tuan Muda (jika belum ada, default ke 'minggu')
+      const selectFilter = document.getElementById('filter-periode');
+      const filterPeriode = selectFilter ? selectFilter.value : 'minggu';
+      
+      // 2. Update teks keterangan di bawah judul secara dinamis agar infonya akurat
+      const teksPeriode = document.getElementById('teks-periode');
+      if (teksPeriode) {
+        if (filterPeriode === 'minggu') teksPeriode.innerText = "Perbandingan statistik aktivitas 7 hari terakhir.";
+        if (filterPeriode === '3bulan') teksPeriode.innerText = "Perbandingan statistik aktivitas 3 bulan terakhir.";
+        if (filterPeriode === '6bulan') teksPeriode.innerText = "Perbandingan statistik aktivitas 6 bulan terakhir.";
+        if (filterPeriode === 'tahun') teksPeriode.innerText = "Perbandingan statistik aktivitas 1 tahun terakhir.";
+      }
+
+      // 3. Tarik data dari backend dengan menyertakan parameter filter
+      if (typeof google !== 'undefined' && google.script) {
+        google.script.run.withSuccessHandler(function(res) {
+          if (res.success) {
+            renderGrafikRiil(res.lab, res.broadcast);
+          } else {
+            console.error("Gagal memuat statistik terfilter:", res.error);
+          }
+        }).getStatistikPengunjung(filterPeriode); // << Mengirim jenis filter ke Code.gs
+      }
+    }
+
+    function renderGrafikRiil(jumlahLab, jumlahBroadcast) {
+      const ctx = document.getElementById('chartPengunjung').getContext('2d');
+      if (!ctx) return;
+
+      if (instanceChartPengunjung !== null) {
+        instanceChartPengunjung.destroy();
+      }
+
+      instanceChartPengunjung = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['Lab Komputer', 'Studio Broadcast'],
+          datasets: [{
+            label: 'Jumlah Pengunjung',
+            data: [jumlahLab, jumlahBroadcast],
+            backgroundColor: ['#1e3a8a', '#eab308'], 
+            borderRadius: 6
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: { 
+            y: { 
+              beginAtZero: true, 
+              grid: { color: '#f1f5f9' },
+              ticks: { stepSize: 1 }
+            }, 
+            x: { grid: { display: false } } 
+          }
+        }
+      });
+    }
+
+
+    // Mengambil data dari server Apps Script
+    function loadRealtimeData() {
+      if (typeof google !== 'undefined' && google.script && google.script.run) {
+        google.script.run.withSuccessHandler(function(response) {
+          renderJadwalHariIni(response.jadwal);
+        }).getData();
+      } else {
+        // Data Dummy untuk pratinjau jika dibuka di luar lingkungan Google
+        const dummyJadwal = [
+          ["Hari", "Jam_Mulai", "Jam_Selesai", "Kelas", "Guru"],
+          ["Senin", "07:00", "08:20", "7A", "Muhlisin"],
+          ["Senin", "08:30", "09:50", "8B", "Siti Aminah"],
+          ["Selasa", "09:00", "10:30", "9C", "Ahmad Fauzi"]
+        ];
+        renderJadwalHariIni(dummyJadwal);
+      }
+    }
+
+ function renderJadwalHariIni(dataArray) {
+  const tbody = document.getElementById('tabel-jadwal-body');
+  if (!tbody) return;
+
+  try {
+    tbody.innerHTML = '';
+
+    // 1. Dapatkan nama hari ini dalam Bahasa Indonesia secara otomatis & aman
+    const hariSekarang = new Intl.DateTimeFormat('id-ID', { weekday: 'long' }).format(new Date()).toLowerCase();
+
+    // 2. Validasi data
+    if (!dataArray || !Array.isArray(dataArray) || dataArray.length <= 1) {
+      tbody.innerHTML = '<tr><td colspan="3" class="p-6 text-center text-slate-400 italic">Belum ada data jadwal di database.</td></tr>';
+      return;
+    }
+
+    let ditemukan = 0;
+
+    // 3. Looping baris data (Mulai baris ke-2 / indeks 1)
+    for (let i = 1; i < dataArray.length; i++) {
+      const row = dataArray[i];
+      if (!row || row.length === 0) continue;
+
+      // Cek apakah kolom A (index 0) atau kolom B (index 1) yang berisi kata Hari
+      const col0 = row[0] ? row[0].toString().trim().toLowerCase() : '';
+      const col1 = row[1] ? row[1].toString().trim().toLowerCase() : '';
+
+      let isHariCocok = false;
+      let jam = '', kelas = '', guru = '';
+
+      if (col0 === hariSekarang) {
+        // Format Tanpa ID: [Hari, JamMulai, JamSelesai, Kelas, Guru]
+        isHariCocok = true;
+        jam = (row[1] || '-') + ' - ' + (row[2] || '-');
+        kelas = row[3] || '-';
+        guru = row[4] || '-';
+      } else if (col1 === hariSekarang) {
+        // Format Pakai ID: [ID_Jadwal, Hari, JamMulai, JamSelesai, Kelas, Guru]
+        isHariCocok = true;
+        jam = (row[2] || '-') + ' - ' + (row[3] || '-');
+        kelas = row[4] || '-';
+        guru = row[5] || '-';
+      }
+
+      if (isHariCocok) {
+        ditemukan++;
+        const tr = document.createElement('tr');
+        tr.className = "hover:bg-blue-50/60 transition-colors duration-300 border-b border-slate-100 last:border-0";
+        tr.innerHTML = `
+          <td class="p-4 text-sm font-semibold text-slate-700 whitespace-nowrap">
+             <div class="flex items-center gap-2">
+               <i class="fa-regular fa-clock text-blue-500"></i>
+               ${jam}
+             </div>
+          </td>
+          <td class="p-4 whitespace-nowrap">
+             <span class="bg-gradient-to-r from-blue-100 to-indigo-100 text-blue-800 px-3 py-1 rounded-full text-xs font-bold tracking-wide shadow-sm border border-blue-200">
+               ${kelas}
+             </span>
+          </td>
+          <td class="p-4 text-sm font-medium text-slate-600 min-w-[150px]">
+             <div class="flex items-center gap-2">
+               <i class="fa-solid fa-user-tie text-slate-400"></i>
+               ${guru}
+             </div>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      }
+    }
+
+    // 4. Jika hari ini tidak ada jadwal penggunaan lab
+    if (ditemukan === 0) {
+      const namaHariKapital = hariSekarang.charAt(0).toUpperCase() + hariSekarang.slice(1);
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="3" class="p-8 text-center">
+            <div class="flex flex-col items-center justify-center gap-2">
+              <div class="bg-slate-100 p-3 rounded-full text-slate-400 mb-1">
+                <i class="fa-solid fa-calendar-xmark text-2xl"></i>
+              </div>
+              <span class="font-semibold text-slate-600">Tidak ada jadwal penggunaan lab untuk hari ${namaHariKapital}.</span>
+              <span class="text-xs text-slate-400">Lab Komputer sedang bebas peminjaman atau maintenance.</span>
+            </div>
+          </td>
+        </tr>`;
+    }
+
+  } catch (error) {
+    console.error("Error rendering jadwal:", error);
+    tbody.innerHTML = '<tr><td colspan="3" class="p-4 text-center text-slate-400 italic">Gagal memuat jadwal hari ini.</td></tr>';
+  }
+}
+
+
+    // Fungsi untuk berpindah halaman tanpa reload
+    function switchTab(tabId) {
+      // 1. Sembunyikan semua section terlebih dahulu
+      document.getElementById('sec-beranda').classList.add('hidden');
+      document.getElementById('sec-peminjaman').classList.add('hidden');
+      document.getElementById('sec-broadcast').classList.add('hidden');
+      document.getElementById('sec-admin').classList.add('hidden');
+
+      // 2. Tampilkan section yang diklik
+      document.getElementById('sec-' + tabId).classList.remove('hidden');
+
+      // 3. Tutup menu mobile (jika dibuka dari HP)
+      document.getElementById('mobile-menu').classList.add('hidden');
+      
+      // Menggulir kembali ke atas halaman
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Fungsi untuk membuka & menutup Modal Login Admin
+    function openLoginModal() { 
+      document.getElementById('modal-login').classList.remove('hidden');
+      document.getElementById('mobile-menu').classList.add('hidden');
+    }
+    
+    function closeLoginModal() { 
+      document.getElementById('modal-login').classList.add('hidden'); 
+    }
+    
+    // Fungsi sementara untuk tombol login
+    function prosesLogin() {
+      alert("Nantinya ini akan mengecek Username & Password ke Spreadsheet, lalu memuat Halaman Admin Khusus (CRUD).");
+      closeLoginModal();
+    }
+
+    // Fungsi untuk Menu Hamburger (Mobile)
+    function toggleMobileMenu() { 
+      document.getElementById('mobile-menu').classList.toggle('hidden'); 
+    }
+    // Fungsi untuk memproses login nyata ke Google Sheets
+    // Fungsi untuk memproses login nyata ke Google Sheets
+function prosesLogin() {
+  const user = document.getElementById('admin-user').value.trim();
+  const pass = document.getElementById('admin-pass').value.trim();
+  
+  // Validasi khusus Login Admin
+  if (!user || !pass) {
+    alert("Harap isi username dan password terlebih dahulu, Tuan Muda!");
+    return;
+  }
+
+  // Tampilkan popup loading
+  showLoading(); 
+
+  if (typeof google !== 'undefined' && google.script && google.script.run) {
+    // Memanggil fungsi Backend Code.gs
+    google.script.run.withSuccessHandler(function(res) {
+      hideLoading(); // Sembunyikan loading setelah server merespons
+      alert(res.message);
+      
+      if (res.success) {
+        closeLoginModal(); // Tutup popup login
+        
+        // Kosongkan inputan login
+        document.getElementById('admin-user').value = '';
+        document.getElementById('admin-pass').value = '';
+        
+        // Sembunyikan semua halaman publik
+        document.getElementById('sec-beranda').classList.add('hidden');
+        document.getElementById('sec-peminjaman').classList.add('hidden');
+        document.getElementById('sec-broadcast').classList.add('hidden');
+        
+        // Tampilkan halaman panel Admin
+        document.getElementById('sec-admin').classList.remove('hidden');
+      }
+    }).cekLogin(user, pass);
+  } else {
+    // Fallback/Simulasi jika dites di luar server Google
+    setTimeout(() => {
+      hideLoading();
+      if (user === 'admin' && pass === 'almuttaqin2026') {
+        alert("Mode Mockup: Berhasil masuk!");
+        closeLoginModal();
+        document.getElementById('sec-beranda').classList.add('hidden');
+        document.getElementById('sec-admin').classList.remove('hidden');
+      } else {
+        alert("Mode Mockup: Kombinasi sandi keliru!");
+      }
+    }, 1500); // Simulasi delay 1.5 detik
+  }
+}
+
+    // Fungsi Keluar dari Halaman Admin
+    function logoutAdmin() {
+      if(confirm("Apakah Tuan Muda yakin ingin keluar dari panel admin?")) {
+        document.getElementById('sec-admin').classList.add('hidden');
+        document.getElementById('sec-beranda').classList.remove('hidden');
+      }
+    }
+    
+    // Mengirim data form jadwal baru ke Code.gs
+    function handleTambahJadwal(e) {
+      e.preventDefault(); // Mencegah reload halaman
+      
+      const hari = document.getElementById('jdl-hari').value;
+      const kelas = document.getElementById('jdl-kelas').value;
+      const jamMulai = document.getElementById('jdl-jam-mulai').value;
+      const jamSelesai = document.getElementById('jdl-jam-selesai').value;
+      const guru = document.getElementById('jdl-guru').value;
+
+      // Memunculkan Popup Loading SweetAlert2
+      Swal.fire({
+        title: 'Menyimpan Data...',
+        html: 'Mohon tunggu sebentar, sistem sedang menghubungi database.',
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        }
+      });
+
+      if (typeof google !== 'undefined' && google.script) {
+        google.script.run.withSuccessHandler(function(res) {
+          if (res.success) {
+            // Popup Sukses
+            Swal.fire({
+              icon: 'success',
+              title: 'Berhasil!',
+              text: res.message,
+              confirmButtonColor: '#3085d6'
+            });
+            document.getElementById('form-tambah-jadwal').reset(); // Kosongkan form
+            loadJadwalAdmin(); // Refresh tabel admin
+            loadJadwalData();  // Refresh tabel beranda
+          } else {
+            // Popup Error
+            Swal.fire({
+              icon: 'error',
+              title: 'Gagal!',
+              text: res.message,
+              confirmButtonColor: '#d33'
+            });
+          }
+        }).tambahJadwal(hari, kelas, jamMulai, jamSelesai, guru);
+      }
+    }
+
+    // Mengirim data form inventaris baru ke Code.gs
+    function handleTambahInventaris(e) {
+      e.preventDefault();
+      const ruang = document.getElementById('inv-target-ruang').value;
+      const nama = document.getElementById('inv-nama').value;
+      const jumlah = document.getElementById('inv-jumlah').value;
+      const kondisi = document.getElementById('inv-kondisi').value;
+
+      if (typeof google !== 'undefined' && google.script) {
+        google.script.run.withSuccessHandler(function(res) {
+          alert(res.message);
+          if (res.success) e.target.reset();
+        }).tambahInventaris(ruang, nama, jumlah, kondisi);
+      } else {
+        alert("Mode Mockup: Sukses input barang [" + nama + "] sebanyak " + jumlah + " unit ke " + ruang);
+      }
+    }
+
+    // ====================================================================
+    // MANAGEMENT LOGIK SISTEM INVENTARIS (LABKOM & BROADCAST)
+    // ====================================================================
+
+    // Ganti fungsi navigasi admin lama Anda dengan yang ini agar otomatis memuat data inventaris
+    function bukaPanelAdmin(jenis) {
+      document.querySelectorAll('.adm-panel').forEach(p => p.classList.add('hidden'));
+      document.querySelectorAll('.btn-adm-nav').forEach(b => {
+        b.className = "w-full text-left hover:bg-slate-50 text-slate-700 p-3 rounded-lg text-sm font-medium flex items-center btn-adm-nav";
+      });
+
+      if (jenis === 'jadwal') {
+        document.getElementById('adm-panel-jadwal').classList.remove('hidden');
+        document.getElementById('btn-adm-jadwal').className = "w-full text-left bg-blue-50 text-blue-700 p-3 rounded-lg text-sm font-semibold flex items-center btn-adm-nav";
+        loadJadwalAdmin();
+      } else if (jenis === 'inv-lab') {
+        document.getElementById('adm-panel-inventaris').classList.remove('hidden');
+        document.getElementById('txt-inv-ruang').innerText = "Inventaris Laboratorium Komputer";
+        document.getElementById('inv-target-ruang').value = "Labkom";
+        document.getElementById('btn-adm-inv-lab').className = "w-full text-left bg-blue-50 text-blue-700 p-3 rounded-lg text-sm font-semibold flex items-center btn-adm-nav";
+        loadInventarisData(); // << Tarik data khusus Labkom
+      } else if (jenis === 'inv-brd') {
+        document.getElementById('adm-panel-inventaris').classList.remove('hidden');
+        document.getElementById('txt-inv-ruang').innerText = "Inventaris Studio Broadcast";
+        document.getElementById('inv-target-ruang').value = "Broadcast";
+        document.getElementById('btn-adm-inv-brd').className = "w-full text-left bg-blue-50 text-blue-700 p-3 rounded-lg text-sm font-semibold flex items-center btn-adm-nav";
+        loadInventarisData(); // << Tarik data khusus Broadcast
+      } else if (jenis === 'verifikasi-pinjam') {
+        document.getElementById('adm-panel-verifikasi').classList.remove('hidden');
+        document.getElementById('btn-adm-verify').className = "w-full text-left bg-blue-50 text-blue-700 p-3 rounded-lg text-sm font-semibold flex items-center btn-adm-nav";
+        loadPeminjamanData();
+      }
+    }
+
+    // 2. Jalankan fungsi load data peminjaman saat web pertama dibuka
+    document.addEventListener('DOMContentLoaded', () => {
+      if (typeof loadPeminjamanData === "function") {
+        loadPeminjamanData();
+      }
+    });
+
+    // Mengirim Form Pengunjung
+function handleFormPengunjung(e) {
+  e.preventDefault(); 
+  
+  const nama = document.getElementById('v-nama').value.trim();
+  const peran = document.getElementById('v-peran').value;
+  const ruang = document.getElementById('v-ruang').value;
+  const keperluan = document.getElementById('v-keperluan').value.trim();
+
+  // Validasi Tambahan (Wajib Diisi)
+  if(!nama || !keperluan) {
+    alert("Mohon lengkapi semua kolom nama dan keperluan!");
+    return;
+  }
+
+  showLoading(); // Tampilkan loading popup
+
+  if (typeof google !== 'undefined' && google.script && google.script.run) {
+    google.script.run.withSuccessHandler(function(res) {
+      hideLoading(); // Sembunyikan loading
+      alert(res.message);
+      if(res.success) document.getElementById('form-pengunjung').reset();
+    }).tambahPengunjung(nama, peran, ruang, keperluan);
+  } else {
+    // Mode Mockup (Jika dites di lokal / bukan GAS)
+    setTimeout(() => {
+      hideLoading();
+      alert("Mode Mockup: Data [" + nama + "] disimulasikan berhasil disimpan!");
+      document.getElementById('form-pengunjung').reset();
+    }, 1500); // delay buatan 1.5 detik
+  }
+}
+
+// Mengirim Form Peminjaman Barang
+function handleAjukanPeminjaman(e) {
+  e.preventDefault();
+  
+  const nama = document.getElementById('p-nama').value.trim();
+  const ruang = document.getElementById('p-ruang').value;
+  const barang = document.getElementById('p-barang').value.trim();
+  const tglPinjam = document.getElementById('p-tgl-pinjam').value;
+  const tglKembali = document.getElementById('p-tgl-kembali').value;
+
+  // Validasi Tambahan
+  if(!nama || !barang || !tglPinjam || !tglKembali) {
+    alert("Harap lengkapi semua data peminjaman!");
+    return;
+  }
+
+  showLoading(); // Tampilkan loading popup
+
+  if (typeof google !== 'undefined' && google.script && google.script.run) {
+    google.script.run.withSuccessHandler(function(res) {
+      hideLoading();
+      alert(res.message);
+      if(res.success) {
+        document.getElementById('form-pinjam-barang').reset();
+        loadPeminjamanData(); // Refresh tabel setelah submit
+      }
+    }).ajukanPeminjaman(nama, barang, ruang, tglPinjam, tglKembali);
+  } else {
+    setTimeout(() => {
+      hideLoading();
+      alert("Mode Mockup: Pengajuan alat [" + barang + "] berhasil disimulasikan.");
+      document.getElementById('form-pinjam-barang').reset();
+    }, 1500);
+  }
+}
+
+    // 4. Mengambil data peminjaman dari Sheets
+    function loadPeminjamanData() {
+      if (typeof google !== 'undefined' && google.script) {
+        google.script.run.withSuccessHandler(function(dataArray) {
+          renderTabelPeminjaman(dataArray);
+        }).getPeminjamanData();
+      } else {
+        // Dummy data preview lokal jika tidak jalan di server
+        const dummy = [
+          ["ID", "Nama", "Barang", "Ruang", "Tgl_Pinjam", "Tgl_Kembali", "Status"],
+          ["LJN-001", "Pak Muhlisin", "Kamera DSLR", "Broadcast", "2026-07-01", "2026-07-03", "Diajukan"]
+        ];
+        renderTabelPeminjaman(dummy);
+      }
+    }
+
+    // 5. Menyusun tabel data ke Halaman Publik & Admin
+    function renderTabelPeminjaman(dataArray) {
+      const tbodyPublic = document.getElementById('tabel-pinjam-public-body');
+      const tbodyAdmin = document.getElementById('tabel-admin-verifikasi-body');
+      
+      if(tbodyPublic) tbodyPublic.innerHTML = '';
+      if(tbodyAdmin) tbodyAdmin.innerHTML = '';
+
+      if (!dataArray || dataArray.length <= 1) {
+        if(tbodyPublic) tbodyPublic.innerHTML = '<tr><td colspan="5" class="p-4 text-center text-slate-400 italic">Belum ada riwayat transaksi peminjaman.</td></tr>';
+        if(tbodyAdmin) tbodyAdmin.innerHTML = '<tr><td colspan="5" class="p-4 text-center text-slate-400 italic">Bersih! Tidak ada antrean verifikasi.</td></tr>';
+        return;
+      }
+
+      for (let i = 1; i < dataArray.length; i++) {
+        const row = dataArray[i];
+        const id = row[0];
+        const nama = row[1];
+        const barang = row[2];
+        const ruang = row[3];
+        const tglP = row[4];
+        const textTglP = tglP ? new Date(tglP).toLocaleDateString('id-ID', {day:'numeric', month:'short'}) : '-';
+        const tglK = row[5];
+        const textTglK = tglK ? new Date(tglK).toLocaleDateString('id-ID', {day:'numeric', month:'short'}) : '-';
+        const status = row[6];
+
+        let badgeStyle = "bg-slate-100 text-slate-700";
+        if (status === "Diajukan") badgeStyle = "bg-amber-100 text-amber-700 font-semibold animate-pulse";
+        if (status === "Dipinjam") badgeStyle = "bg-blue-100 text-blue-700 font-semibold";
+        if (status === "Dikembalikan") badgeStyle = "bg-green-100 text-green-700 font-semibold";
+
+        if(tbodyPublic) {
+          const trPub = document.createElement('tr');
+          trPub.className = "hover:bg-slate-50 transition border-b border-slate-100";
+          trPub.innerHTML = `
+            <td class="p-3 font-semibold text-slate-900">${id}</td>
+            <td class="p-3 font-medium">${nama}</td>
+            <td class="p-3">${barang} <span class="text-xs text-slate-400 block">${ruang}</span></td>
+            <td class="p-3 text-xs">${textTglP} s/d ${textTglK}</td>
+            <td class="p-3"><span class="${badgeStyle} px-2.5 py-1 rounded-md text-xs">${status}</span></td>
+          `;
+          tbodyPublic.appendChild(trPub);
+        }
+
+        if(tbodyAdmin) {
+          const trAdm = document.createElement('tr');
+          trAdm.className = "hover:bg-slate-50 transition border-b border-slate-100";
+          
+          let tombolAksi = "";
+          if (status === "Diajukan") {
+            tombolAksi = `<button onclick="eksekusiOtoritas('${id}', 'Dipinjam')" class="bg-blue-600 hover:bg-blue-700 text-white text-xs px-3 py-1.5 rounded-lg shadow font-medium transition"><i class="fas fa-check mr-1"></i> Izinkan Pinjam</button>`;
+          } else if (status === "Dipinjam") {
+            tombolAksi = `<button onclick="eksekusiOtoritas('${id}', 'Dikembalikan')" class="bg-green-600 hover:bg-green-700 text-white text-xs px-3 py-1.5 rounded-lg shadow font-medium transition"><i class="fas fa-undo mr-1"></i> Selesai / Kembali</button>`;
+          } else {
+            tombolAksi = `<span class="text-xs text-slate-400 italic"><i class="fas fa-check-double text-green-500 mr-1"></i> Selesai diarsip</span>`;
+          }
+
+          trAdm.innerHTML = `
+            <td class="p-3 font-bold text-slate-800">${id}</td>
+            <td class="p-3 font-medium text-slate-700">${nama}</td>
+            <td class="p-3">${barang} <span class="text-xs text-slate-400 block">${ruang}</span></td>
+            <td class="p-3"><span class="${badgeStyle} px-2 py-0.5 rounded text-xs">${status}</span></td>
+            <td class="p-3 text-center">${tombolAksi}</td>
+          `;
+          tbodyAdmin.appendChild(trAdm);
+        }
+      }
+    }
+
+    // 6. Fungsi tombol aksi Admin untuk merubah status
+    function eksekusiOtoritas(idTransaction, statusTujuan) {
+      if (!confirm("Konfirmasi aksi status " + statusTujuan + " untuk transaksi " + idTransaction + "?")) return;
+      
+      if (typeof google !== 'undefined' && google.script) {
+        google.script.run.withSuccessHandler(function(res) {
+          alert(res.message);
+          if (res.success) loadPeminjamanData();
+        }).ubahStatusPeminjaman(idTransaction, statusTujuan);
+      } else {
+        alert("Mode Mockup: Mengubah #" + idTransaction + " menjadi " + statusTujuan);
+      }
+    }
+
+    // Handler Kirim Form Inventaris Baru ke Server Sheets
+    function handleTambahInventaris(e) {
+      e.preventDefault();
+      const nama = document.getElementById('inv-nama').value;
+      const jumlah = document.getElementById('inv-jumlah').value;
+      const kondisi = document.getElementById('inv-kondisi').value;
+      const ruang = document.getElementById('inv-target-ruang').value;
+
+      if (typeof google !== 'undefined' && google.script) {
+        google.script.run.withSuccessHandler(function(res) {
+          alert(res.message);
+          if (res.success) {
+            document.getElementById('inv-nama').value = '';
+            document.getElementById('inv-jumlah').value = '1';
+            loadInventarisData(); // Refresh isi tabel inventaris
+          }
+        }).tambahInventaris(nama, jumlah, kondisi, ruang);
+      } else {
+        alert("Mode Mockup: Berhasil menyimpan " + nama + " ke " + ruang);
+      }
+    }
+
+    // Mengambil data inventaris dari server
+    function loadInventarisData() {
+      const ruangAktif = document.getElementById('inv-target-ruang').value;
+      if (typeof google !== 'undefined' && google.script) {
+        google.script.run.withSuccessHandler(function(dataArray) {
+          renderTabelInventaris(dataArray, ruangAktif);
+        }).getInventarisData();
+      } else {
+        // Data tiruan simulasi offline
+        const dummy = [
+          ["ID_Barang", "Nama_Barang", "Jumlah", "Kondisi", "Ruang"],
+          ["INV-001", "PC Monitor Lenovo", "15", "Bagus", "Labkom"],
+          ["INV-002", "Mic Clip-on Saramonic", "2", "Rusak Ringan", "Broadcast"]
+        ];
+        renderTabelInventaris(dummy, ruangAktif);
+      }
+    }
+
+    // Memfilter data sesuai ruang aktif dan merendernya ke tabel HTML
+    function renderTabelInventaris(dataArray, ruangAktif) {
+      const tbody = document.getElementById('tabel-inventaris-body');
+      if (!tbody) return;
+      tbody.innerHTML = '';
+
+      // Hitung baris data (abaikan baris 0 karena itu header)
+      let jumlahAsetTerfilter = 0;
+
+      if (dataArray && dataArray.length > 1) {
+        for (let i = 1; i < dataArray.length; i++) {
+          const row = dataArray[i];
+          const id = row[0];
+          const nama = row[1];
+          const jumlah = row[2];
+          const kondisi = row[3];
+          const ruang = row[4];
+
+          // FILTER UTAMA: Hanya tampilkan jika kolom Ruang sama dengan Tab Menu yang sedang dibuka Admin
+          if (ruang === ruangAktif) {
+            jumlahAsetTerfilter++;
+            
+            let labelKondisi = "bg-green-100 text-green-700";
+            if (kondisi === "Rusak Ringan") labelKondisi = "bg-amber-100 text-amber-700";
+            if (kondisi === "Rusak Berat") labelKondisi = "bg-red-100 text-red-700";
+
+            const tr = document.createElement('tr');
+            tr.className = "hover:bg-slate-50 transition border-b border-slate-100";
+           // PERUBAHAN: Menggunakan tombol berwarna dengan teks yang jelas agar pasti muncul
+            tr.innerHTML = `
+              <td class="p-2.5 font-bold text-slate-700">${id}</td>
+              <td class="p-2.5 font-medium">${nama}</td>
+              <td class="p-2.5">${jumlah} Unit</td>
+              <td class="p-2.5"><span class="${labelKondisi} px-2 py-0.5 rounded text-[10px] font-semibold">${kondisi}</span></td>
+              <td class="p-2.5 text-center no-print">
+                <button onclick="editDataInventaris('${id}', '${nama}', '${jumlah}', '${kondisi}')" class="bg-blue-500 hover:bg-blue-600 text-white px-2 py-1 rounded text-xs shadow-sm mx-1">
+                  Edit
+                </button>
+                <button onclick="hapusDataPusat('Inventaris', '${id}')" class="bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded text-xs shadow-sm mx-1">
+                  Hapus
+                </button>
+              </td>
+            `;
+            tbody.appendChild(tr);
+          }
+        }
+      }
+
+      if (jumlahAsetTerfilter === 0) {
+        tbody.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-slate-400 italic">Belum ada barang terdaftar di ruang ${ruangAktif === 'Labkom' ? 'Lab Komputer' : 'Studio Broadcast'}.</td></tr>`;
+      }
+    }
+
+    // ====================================================================
+    // FUNGSI EKSEKUTOR AKSI (TOMBOL EDIT & HAPUS)
+    // ====================================================================
+
+    // 1. Eksekutor Tombol Hapus
+    function hapusDataPusat(namaSheet, idData) {
+      if (!confirm(`Apakah Anda yakin ingin menghapus data ${idData} ini secara permanen dari database?`)) return;
+      
+      if (typeof google !== 'undefined' && google.script) {
+        google.script.run.withSuccessHandler(function(res) {
+          alert(res.message);
+          if (res.success) {
+            if (namaSheet === 'Inventaris') loadInventarisData();
+            if (namaSheet === 'Jadwal') loadJadwalAdmin(); // Menggunakan fungsi Admin, bukan Beranda
+          }
+        }).hapusDataGlobal(namaSheet, idData);
+      } else {
+        alert("Mode Mockup: Menghapus data " + idData);
+      }
+    }
+
+    // 2. Eksekutor Tombol Edit
+    function editDataInventaris(id, oldNama, oldJumlah, oldKondisi) {
+      // Prompt 1: Edit Nama
+      const namaBaru = prompt(`Ubah Nama Barang (${id}):`, oldNama);
+      if (namaBaru === null || namaBaru.trim() === "") return; // Batal jika kosong/cancel
+
+      // Prompt 2: Edit Jumlah
+      const jumlahBaru = prompt(`Ubah Jumlah ${namaBaru}:`, oldJumlah);
+      if (jumlahBaru === null || jumlahBaru.trim() === "") return;
+
+      // Prompt 3: Edit Kondisi
+      let kondisiBaru = prompt(`Ubah Kondisi (Ketik: Bagus / Rusak Ringan / Rusak Berat):`, oldKondisi);
+      if (kondisiBaru === null) return;
+      
+      // Validasi pengetikan kondisi agar rapi di database
+      if (!['Bagus', 'Rusak Ringan', 'Rusak Berat'].includes(kondisiBaru)) {
+        alert("Input gagal! Kondisi harus diketik persis: Bagus, Rusak Ringan, atau Rusak Berat (Perhatikan huruf besarnya)");
+        return;
+      }
+
+      // Kirim ke server jika semua input valid
+      if (typeof google !== 'undefined' && google.script) {
+        google.script.run.withSuccessHandler(function(res) {
+          alert(res.message);
+          if (res.success) loadInventarisData(); // Refresh tabel setelah edit
+        }).editInventaris(id, namaBaru, jumlahBaru, kondisiBaru);
+      }
+    }
+
+    
+    // ====================================================================
+    // LOGIKA 1: JADWAL UNTUK BERANDA (MURNI TAMPILAN - TANPA TOMBOL AKSI)
+    // ====================================================================
+    function loadJadwalData() {
+      if (typeof google !== 'undefined' && google.script) {
+        google.script.run.withSuccessHandler(function(dataArray) {
+          renderTabelJadwalBeranda(dataArray);
+        }).getJadwalData();
+      }
+    }
+
+    function renderTabelJadwalBeranda(dataArray) {
+      const tbody = document.getElementById('tabel-jadwal-hari-ini-body') || document.getElementById('tabel-jadwal-body');
+      if (!tbody) return;
+      tbody.innerHTML = '';
+
+      // Dapatkan hari ini, lalu ubah ke huruf KECIL semua untuk pencocokan yang aman
+      const listHari = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+      const hariIni = listHari[new Date().getDay()].toLowerCase(); 
+      
+      let adaJadwal = false;
+
+      if (dataArray && dataArray.length > 1) {
+        for (let i = 1; i < dataArray.length; i++) {
+          const row = dataArray[i];
+          
+          // Ambil data hari dari sheet (Kolom ke-1/Index 0), bersihkan spasi (.trim()), dan kecilkan hurufnya
+          const hariData = row[0] ? row[0].toString().trim().toLowerCase() : '';
+
+          // Kolom lainnya (sesuai format tanpa ID yang kita buat kemarin)
+          const jamMulai = row[1];
+          const jamSelesai = row[2];
+          const kelas = row[3];
+          const guru = row[4];
+
+          // PENCOCOKAN: Apakah hari di sheet sama dengan hari ini di dunia nyata?
+          if (hariData === hariIni) {
+            adaJadwal = true;
+            const tr = document.createElement('tr');
+            // Menambahkan struktur responsif pada baris tabel
+            tr.className = "hover:bg-blue-50/50 transition-colors duration-200 border-b border-slate-100 text-xs text-slate-600";
+            tr.innerHTML = `
+              <td class="p-3 whitespace-nowrap font-medium text-slate-800">${jamMulai}</td>
+              <td class="p-3 whitespace-nowrap font-medium text-slate-800">${jamSelesai}</td>
+              <td class="p-3 whitespace-nowrap text-blue-600 font-bold bg-blue-50/30">${kelas}</td>
+              <td class="p-3 whitespace-nowrap text-slate-700">${guru}</td>
+            `; 
+            tbody.appendChild(tr);
+          }
+        }
+      }
+
+      // Jika hari ini benar-benar tidak ada jadwal terdaftar
+      if (!adaJadwal) {
+        // Ambil nama hari asli dengan huruf besar di awal (Senin, Selasa, dll) untuk pesan kosong
+        const hariKapital = listHari[new Date().getDay()]; 
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="4" class="p-8 text-center">
+              <div class="flex flex-col items-center justify-center text-slate-400">
+                <i class="fas fa-calendar-times text-3xl mb-2 opacity-50"></i>
+                <span class="text-sm">Tidak ada jadwal KBM Labkom terdaftar untuk hari <b>${hariKapital}</b>.</span>
+              </div>
+            </td>
+          </tr>`;
+      }
+    }
+
+    // ====================================================================
+    // LOGIKA 2: JADWAL UNTUK MENU ADMIN (LENGKAP EDIT, HAPUS & 6 HARI KERJA)
+    // ====================================================================
+    function loadJadwalAdmin() {
+      if (typeof google !== 'undefined' && google.script) {
+        google.script.run.withSuccessHandler(function(dataArray) {
+          renderTabelJadwalAdmin(dataArray);
+        }).getJadwalData();
+      }
+    }
+
+    function renderTabelJadwalAdmin(dataArray) {
+      const tbody = document.getElementById('tabel-jadwal-admin-body');
+      if (!tbody) return;
+      tbody.innerHTML = '';
+
+      const urutanHari = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+
+      if (dataArray && dataArray.length > 1) {
+        let dataBaris = dataArray.slice(1);
+        // Urutkan jadwal secara kronologis Senin s/d Sabtu
+        dataBaris.sort((a, b) => urutanHari.indexOf(a[1]) - urutanHari.indexOf(b[1]));
+
+        dataBaris.forEach(row => {
+      // Indeks bergeser karena ID dihapus
+      const hari = row[0];
+      const jamMulai = row[1];
+      const jamSelesai = row[2];
+      const kelas = row[3];
+      const guru = row[4];
+
+      const tr = document.createElement('tr');
+      tr.className = "hover:bg-slate-50 transition border-b border-slate-100 text-xs text-slate-600";
+      tr.innerHTML = `
+        <td class="p-2.5 font-bold text-slate-700">${hari}</td>
+        <td class="p-2.5 font-medium">${jamMulai}</td>
+        <td class="p-2.5 font-medium">${jamSelesai}</td>
+        <td class="p-2.5 text-blue-600 font-semibold">${kelas}</td>
+        <td class="p-2.5 text-slate-700">${guru}</td>
+        <td class="p-2.5 text-center">
+          <!-- Tombol Edit sekarang mengirimkan data lama sebagai kunci pencarian -->
+          <button onclick="editDataJadwal('${hari}', '${jamMulai}', '${jamSelesai}', '${kelas}', '${guru}')" class="bg-blue-500 hover:bg-blue-600 text-white px-2 py-1 rounded text-xs shadow-sm mx-0.5">
+            Edit
+          </button>
+          <button onclick="hapusJadwalTanpaId('${hari}', '${jamMulai}', '${kelas}')" class="bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded text-xs shadow-sm mx-0.5">
+            Hapus
+          </button>
+        </td>
+      `;
+      tbody.appendChild(tr);
+    });
+      } else {
+        tbody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-slate-400 italic">Belum ada jadwal terdaftar.</td></tr>`;
+      }
+    }
+
+    function handleTambahJadwal(e) {
+      e.preventDefault();
+      const hari = document.getElementById('jdl-hari').value;
+      const kelas = document.getElementById('jdl-kelas').value;
+      const jamMulai = document.getElementById('jdl-jam-mulai').value;
+      const jamSelesai = document.getElementById('jdl-jam-selesai').value;
+      const guru = document.getElementById('jdl-guru').value;
+
+      if (typeof google !== 'undefined' && google.script) {
+        google.script.run.withSuccessHandler(function(res) {
+          alert(res.message);
+          if (res.success) {
+            document.getElementById('form-tambah-jadwal').reset();
+            loadJadwalAdmin(); // Refresh master jadwal admin
+          }
+        }).tambahJadwal(hari, kelas, jamMulai, jamSelesai, guru);
+      }
+    }
+
+    function editDataJadwal(oldHari, oldJamMulai, oldJamSelesai, oldKelas, oldGuru) {
+      const hariBaru = prompt(`Ubah Hari Kerja \n[Ketik: Senin/Selasa/Rabu/Kamis/Jumat/Sabtu]:`, oldHari);
+      if (hariBaru === null || hariBaru.trim() === "") return;
+
+      const jamMulaiBaru = prompt(`Ubah Jam Mulai:`, oldJamMulai);
+      if (jamMulaiBaru === null || jamMulaiBaru.trim() === "") return;
+
+      const jamSelesaiBaru = prompt(`Ubah Jam Selesai:`, oldJamSelesai);
+      if (jamSelesaiBaru === null || jamSelesaiBaru.trim() === "") return;
+
+      const kelasBaru = prompt(`Ubah Nama Kelas:`, oldKelas);
+      if (kelasBaru === null || kelasBaru.trim() === "") return;
+
+      const guruBaru = prompt(`Ubah Nama Guru Pengampu:`, oldGuru);
+      if (guruBaru === null || guruBaru.trim() === "") return;
+
+      if (typeof google !== 'undefined' && google.script) {
+        google.script.run.withSuccessHandler(function(res) {
+          alert(res.message);
+          if (res.success) loadJadwalAdmin();
+        }).editJadwal(oldHari, oldJamMulai, oldKelas, hariBaru, jamMulaiBaru, jamSelesaiBaru, kelasBaru, guruBaru); 
+        // ^ Mengirim 3 data lama di depan sebagai pengganti ID
+      }
+    }
+
+    // Sambungkan fungsi hapus agar me-refresh ke tabel admin yang benar
+    function hapusDataPusat(namaSheet, idData) {
+      if (!confirm(`Apakah Anda yakin ingin menghapus data ${idData} ini secara permanen?`)) return;
+      if (typeof google !== 'undefined' && google.script) {
+        google.script.run.withSuccessHandler(function(res) {
+          alert(res.message);
+          if (res.success) {
+            if (namaSheet === 'Inventaris') loadInventarisData();
+            if (namaSheet === 'Jadwal') loadJadwalAdmin();
+          }
+        }).hapusDataGlobal(namaSheet, idData);
+      }
+    }
+
+    /**
+     * Fungsi menganimasikan angka dari 0 menuju target target nilai tertentu
+     */
+    function jalankanEfekOdometer() {
+      const counters = [
+        { id: 'count-laptop', target: 49 },
+        { id: 'count-pc', target: 22 },
+        { id: 'count-ac', target: 2 }
+      ];
+
+      counters.forEach(counter => {
+        const elemen = document.getElementById(counter.id);
+        if (!elemen) return;
+
+        let nilaiAwal = 0;
+        const targetNilai = counter.target;
+        // Mengatur kecepatan durasi animasi (makin besar pembagi, makin mulus kecepatannya)
+        const durasi = Math.max(Math.floor(2000 / targetNilai), 30); 
+
+        const hitungNaik = setInterval(() => {
+          nilaiAwal++;
+          elemen.innerText = nilaiAwal;
+
+          if (nilaiAwal >= targetNilai) {
+            elemen.innerText = targetNilai; // Kunci nilai akhir agar presisi
+            clearInterval(hitungNaik);
+          }
+        }, durasi);
+      });
+    }
+    // --- LOGIKA FITUR KEUANGAN ADMIN ---
+
+function bukaPanelKeuangan() {
+  // Sembunyikan semua panel admin yang ada
+  document.querySelectorAll('.adm-panel').forEach(p => p.classList.add('hidden'));
+  // Reset warna tombol navigasi admin
+  document.querySelectorAll('.btn-adm-nav').forEach(b => {
+    b.classList.remove('bg-slate-100', 'bg-green-50', 'text-green-700');
+    b.classList.add('text-slate-700');
+  });
+  
+  // Tampilkan panel keuangan dan beri warna aktif pada tombolnya
+  document.getElementById('adm-panel-keuangan').classList.remove('hidden');
+  const btn = document.getElementById('btn-adm-keuangan');
+  btn.classList.remove('text-slate-700');
+  btn.classList.add('bg-green-50', 'text-green-700', 'font-semibold');
+
+  loadDataKeuangan();
+}
+
+function loadDataKeuangan() {
+  if (typeof google !== 'undefined' && google.script) {
+    google.script.run.withSuccessHandler(function(res) {
+      if(res.success) {
+        document.getElementById('teks-total-saldo').innerText = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(res.saldo);
+        renderTabelKeuangan(res.data);
+      }
+    }).getKeuanganData();
+  }
+}
+
+// GANTI fungsi renderTabelKeuangan yang sebelumnya dengan yang ini
+function renderTabelKeuangan(data) {
+  const tbody = document.getElementById('tabel-keuangan-body');
+  tbody.innerHTML = '';
+  
+  if (data.length <= 1) {
+    tbody.innerHTML = '<tr><td colspan="5" class="p-4 text-center text-slate-400">Belum ada riwayat transaksi.</td></tr>';
+    return;
+  }
+
+  // Menampilkan dari bawah (terbaru) ke atas
+  for (let i = data.length - 1; i >= 1; i--) {
+    const row = data[i];
+    const id = row[0]; // Ambil ID Keuangan
+    const tgl = row[1];
+    const ket = row[2];
+    const jenis = row[3];
+    const nominal = parseFloat(row[4] || 0);
+    
+    const isMasuk = jenis === 'Pemasukan';
+    const tr = document.createElement('tr');
+    tr.className = "hover:bg-slate-50 border-b border-slate-100";
+    tr.innerHTML = `
+      <td class="p-3 text-slate-500">${tgl}</td>
+      <td class="p-3 font-medium text-slate-700">${ket}</td>
+      <td class="p-3">
+        <span class="${isMasuk ? 'text-green-600 bg-green-100' : 'text-red-600 bg-red-100'} px-2 py-0.5 rounded font-bold text-[10px] uppercase">${jenis}</span>
+      </td>
+      <td class="p-3 text-right font-bold ${isMasuk ? 'text-green-600' : 'text-red-600'}">
+        ${isMasuk ? '+' : '-'} ${new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(nominal)}
+      </td>
+      <td class="p-3 text-center">
+        <!-- TOMBOL EDIT & HAPUS -->
+        <button onclick="editDataKeuangan('${id}', '${ket}', '${jenis}', '${nominal}')" class="bg-blue-500 hover:bg-blue-600 text-white px-2 py-1 rounded text-xs shadow-sm mx-0.5">Edit</button>
+        <button onclick="hapusDataKeuangan('${id}')" class="bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded text-xs shadow-sm mx-0.5">Hapus</button>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  }
+}
+
+// FUNGSI BARU: Logika Edit Kas
+// REVISI: Logika Edit Kas dengan Error Handling
+function editDataKeuangan(id, oldKet, oldJenis, oldNominal) {
+  const ketBaru = prompt(`Ubah Keterangan Transaksi (${id}):`, oldKet);
+  if (ketBaru === null || ketBaru.trim() === "") return;
+
+  let jenisBaru = prompt(`Ubah Jenis (Ketik: Pemasukan / Pengeluaran):`, oldJenis);
+  if (jenisBaru === null) return;
+  jenisBaru = jenisBaru.trim().charAt(0).toUpperCase() + jenisBaru.trim().slice(1).toLowerCase();
+  
+  if (jenisBaru !== 'Pemasukan' && jenisBaru !== 'Pengeluaran') {
+    alert("Gagal mengedit! Jenis transaksi hanya boleh diisi 'Pemasukan' atau 'Pengeluaran'.");
+    return;
+  }
+
+  const nominalBaru = prompt(`Ubah Nominal (Ketik angka saja, contoh: 50000):`, oldNominal);
+  if (nominalBaru === null || nominalBaru.trim() === "") return;
+
+  if (typeof showLoading === 'function') showLoading();
+  
+  if (typeof google !== 'undefined' && google.script) {
+    google.script.run
+      .withSuccessHandler(function(res) {
+        if (typeof hideLoading === 'function') hideLoading();
+        alert(res.message);
+        if (res.success) loadDataKeuangan(); // Reload tabel otomatis
+      })
+      .withFailureHandler(function(error) {
+        if (typeof hideLoading === 'function') hideLoading();
+        alert("Terjadi kesalahan sistem: " + error.message);
+      })
+      .editTransaksiKeuangan(id, ketBaru, jenisBaru, nominalBaru);
+  } else {
+    if (typeof hideLoading === 'function') hideLoading();
+    alert("Hanya berfungsi di lingkungan Google Apps Script.");
+  }
+}
+
+// FUNGSI BARU: Logika Hapus Kas
+function hapusDataKeuangan(id) {
+  if (!confirm(`Apakah Anda yakin ingin menghapus transaksi ${id}?\nTotal Saldo akan otomatis disesuaikan.`)) return;
+  
+  if (typeof showLoading === 'function') showLoading();
+  if (typeof google !== 'undefined' && google.script) {
+    google.script.run.withSuccessHandler(function(res) {
+      if (typeof hideLoading === 'function') hideLoading();
+      alert(res.message);
+      // Kita memakai fungsi hapusDataGlobal yang sudah ada di sistem Anda
+      if (res.success) loadDataKeuangan(); 
+    }).hapusDataGlobal('Keuangan', id); 
+  }
+}
+
+function submitKeuangan(e) {
+  e.preventDefault();
+  const ket = document.getElementById('input-keu-ket').value;
+  const jenis = document.getElementById('input-keu-jenis').value;
+  const nominal = document.getElementById('input-keu-nominal').value;
+
+  if (typeof showLoading === 'function') showLoading();
+  
+  if (typeof google !== 'undefined' && google.script) {
+    google.script.run.withSuccessHandler(function(res) {
+      if (typeof hideLoading === 'function') hideLoading();
+      alert(res.message);
+      if (res.success) {
+        document.getElementById('form-keuangan').reset();
+        loadDataKeuangan();
+      }
+    }).tambahTransaksiKeuangan(ket, jenis, nominal);
+  }
+}
+
+// --- LOGIKA CETAK PDF INVENTARIS ---
+function cetakLaporanInventaris() {
+  if (typeof showLoading === 'function') showLoading();
+  
+  if (typeof google !== 'undefined' && google.script) {
+    google.script.run
+      .withSuccessHandler(function(res) {
+        if (typeof hideLoading === 'function') hideLoading();
+        
+        if (res && res.success) {
+          bukaJendelaCetak(res.data);
+        } else {
+          const pesanError = (res && res.message) ? res.message : "Format data dari server tidak sesuai.";
+          alert("Gagal memuat data cetak: " + pesanError);
+        }
+      })
+      .withFailureHandler(function(error) {
+        if (typeof hideLoading === 'function') hideLoading();
+        alert("Terjadi kesalahan sistem: " + error.message);
+      })
+      .getDataUntukCetak(); 
+  } else {
+    alert("Hanya berfungsi di server Google Apps Script.");
+  }
+}
+
+function bukaJendelaCetak(dataArray) {
+  const ruangAktif = document.getElementById('inv-target-ruang') ? document.getElementById('inv-target-ruang').value : 'Labkom';
+  const namaRuangTampil = ruangAktif === 'Labkom' ? 'Laboratorium Komputer' : 'Studio Broadcast';
+  
+  // PENENTUAN JUDUL OTOMATIS
+  const judulBuku = ruangAktif === 'Labkom' ? 'BUKU INVENTARIS ALAT LABORATORIUM' : 'BUKU ALAT INVENTARIS BROADCAST';
+  
+  let htmlBarisTabel = '';
+  let nomor = 1;
+  
+  if (dataArray && dataArray.length > 1) {
+    for (let i = 1; i < dataArray.length; i++) {
+      const row = dataArray[i];
+      const namaBarang = row[1] || '-';
+      const jumlah = parseInt(row[2]) || 0;
+      const kondisi = row[3] ? row[3].toString().trim() : '';
+      const ruang = row[4] ? row[4].toString().trim() : '';
+      
+      if (ruang === ruangAktif) {
+        let jmlBaik = kondisi === 'Bagus' ? jumlah : '';
+        let jmlRusak = kondisi === 'Rusak Ringan' ? jumlah : '';
+        let jmlRusakBerat = kondisi === 'Rusak Berat' ? jumlah : '';
+        
+        htmlBarisTabel += `
+          <tr>
+            <td class="center">${nomor++}.</td>
+            <td style="padding-left: 8px;">${namaBarang}</td>
+            <td class="center">${jmlBaik}</td>
+            <td class="center">${jmlRusak}</td>
+            <td class="center">${jmlRusakBerat}</td>
+            <td class="center">${jumlah}</td>
+            <td></td>
+          </tr>
+        `;
+      }
+    }
+  }
+
+  if (nomor === 1) {
+    htmlBarisTabel = `<tr><td colspan="7" class="center" style="padding: 15px;">Belum ada data inventaris untuk ${namaRuangTampil}</td></tr>`;
+  }
+
+  const printContent = `
+    <!DOCTYPE html>
+    <html lang="id">
+    <head>
+      <meta charset="UTF-8">
+      <title>Cetak Inventaris - ${namaRuangTampil}</title>
+      <style>
+        @page { size: 210mm 330mm; margin: 15mm; }
+        body { font-family: 'Times New Roman', Times, serif; font-size: 14px; color: black; background: white; margin: 0; padding: 0; }
+        .kop-surat { display: flex; align-items: center; border-bottom: 2px solid black; padding-bottom: 10px; margin-bottom: 5px; }
+        .kop-surat::after { content: ""; display: block; border-bottom: 1px solid black; margin-top: 2px; }
+        .kop-logo img { width: 85px; height: auto; }
+        .kop-teks { flex: 1; text-align: center; line-height: 1.3; }
+        .kop-teks h2 { margin: 0; font-size: 16px; color: #555; font-weight: bold; }
+        .kop-teks h1 { margin: 0; font-size: 18px; font-weight: bold; }
+        .kop-teks h3 { margin: 0; font-size: 16px; font-weight: bold; }
+        .kop-teks p { margin: 5px 0 0 0; font-size: 11px; }
+        .judul-dokumen { text-align: center; font-weight: bold; font-size: 16px; margin: 20px 0; text-transform: uppercase; }
+        .tabel-identitas { width: 100%; border: none; margin-bottom: 15px; font-size: 14px; }
+        .tabel-identitas td { padding: 3px 0; vertical-align: top; }
+        .col-label { width: 160px; }
+        .col-titik { width: 15px; text-align: center; }
+        .tabel-data { width: 100%; border-collapse: collapse; margin-bottom: 40px; font-size: 14px; }
+        .tabel-data th, .tabel-data td { border: 1px solid black; padding: 6px 4px; }
+        .tabel-data th { text-align: center; font-weight: bold; }
+        .center { text-align: center; }
+        .ttd-container { width: 100%; display: table; font-size: 14px; margin-top: 20px; }
+        .ttd-box { display: table-cell; width: 50%; text-align: center; vertical-align: top; }
+        .ttd-space { height: 70px; }
+        .ttd-nama { font-weight: bold; }
+        @media print { body { -webkit-print-color-adjust: exact; print-color-adjust: exact; } }
+      </style>
+    </head>
+    <body>
+      <div class="kop-surat">
+        <div class="kop-logo">
+          <img src="https://lh3.googleusercontent.com/d/1tTkumwU3NlZKCrWFcxj5olCndxL50EUG" alt="Logo">
+        </div>
+        <div class="kop-teks">
+          <h2>LEMBAGA PENDIDIKAN ISLAM (LPI) YAYASAN AL MUTTAQIN</h2>
+          <h1>SMP AL MUTTAQIN FULLDAY & BOARDING SCHOOL</h1>
+          <h3>KOTA TASIKMALAYA</h3>
+          <p>Jl. Ahmad Yani No. 140 Tlp. 0265 310969 E-mail: info@smpalmuttaqin.sch.id</p>
+        </div>
+      </div>
+      <div style="border-bottom: 3px solid black; margin-bottom: 2px;"></div>
+      <div style="border-bottom: 1px solid black;"></div>
+
+      <!-- JUDUL OTOMATIS -->
+      <div class="judul-dokumen">${judulBuku}</div>
+
+      <table class="tabel-identitas">
+        <tr><td class="col-label">Nama Sekolah</td><td class="col-titik">:</td><td>SMP Al Muttaqin Fullday & Boarding School Kota Tasikmalaya</td></tr>
+        <tr><td class="col-label">Alamat</td><td class="col-titik">:</td><td>Jalan Jendral Ahmad Yani No 140 Kota Tasikmalaya</td></tr>
+        <tr><td class="col-label">Ruang</td><td class="col-titik">:</td><td>${namaRuangTampil}</td></tr>
+        <tr><td class="col-label">Penanggung Jawab</td><td class="col-titik">:</td><td>Gani Adi Alzani Rusandi, S.Kom</td></tr>
+      </table>
+
+      <table class="tabel-data">
+        <thead>
+          <tr>
+            <th rowspan="2" style="width: 5%;">NO</th>
+            <th rowspan="2" style="width: 35%;">Nama Barang</th>
+            <th rowspan="2" style="width: 10%;">Baik</th>
+            <th rowspan="2" style="width: 10%;">Rusak</th>
+            <th rowspan="2" style="width: 10%;">Rusak<br>Berat</th>
+            <th rowspan="2" style="width: 12%;">Jumlah<br>Barang</th>
+            <th rowspan="2" style="width: 18%;">Keterangan</th>
+          </tr>
+          <tr></tr>
+        </thead>
+        <tbody>${htmlBarisTabel}</tbody>
+      </table>
+
+      <div class="ttd-container">
+        <div class="ttd-box">
+          Mengetahui<br>Kepala SMP Al Muttaqin Fullday & Boarding School
+          <div class="ttd-space"></div>
+          <span class="ttd-nama">Iman Kandarisman. M.Pd</span><br>NIY. 9920604153
+        </div>
+        <div class="ttd-box">
+          Tasikmalaya, ........................ ${new Date().getFullYear()}<br>Wakasek Sarana Prasarana
+          <div class="ttd-space"></div>
+          <span class="ttd-nama">Lukman Hakim, S.Pd</span><br>NIY. 9920603142
+        </div>
+      </div>
+    </body>
+    </html>
+  `;
+
+  const printWindow = window.open('', '_blank');
+  printWindow.document.write(printContent);
+  printWindow.document.close();
+  
+  setTimeout(() => {
+    printWindow.focus();
+    printWindow.print();
+  }, 1000);
+}
+  </script>
+  <footer class="bg-slate-900 text-slate-400 border-t border-slate-800 mt-20 py-6">
+    <div class="max-w-7xl mx-auto px-4 text-center sm:text-left flex flex-col sm:flex-row justify-between items-center gap-2 text-xs">
+      <div>
+        <p class="text-white font-semibold">SILKOBO v1.0</p>
+        <p>© 2026 Lab. Komputer & Studio Broadcast SMP Al Muttaqin.</p>
+      </div>
+      <p class="text-slate-500">Alamat: Jl. Ahmad Yani No.19, Tasikmalaya, Jawa Barat</p>
+    </div>
+  </footer>
+</body>
+</html>
+
